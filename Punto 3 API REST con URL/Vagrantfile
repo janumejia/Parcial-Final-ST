@@ -1,0 +1,8 @@
+Vagrant.configure("2") do |config|
+ config.vm.define :clienteAPIREST do |clienteAPIREST|
+  clienteAPIREST.vm.box = "bento/centos-7.8"
+  clienteAPIREST.vm.network :private_network, ip: "192.168.50.3"
+  clienteAPIREST.vm.provision "file", source: "apirest_url.py", destination: "/home/vagrant/apirest_url.py"
+  clienteAPIREST.vm.hostname = "clienteAPIREST"
+ end
+end
