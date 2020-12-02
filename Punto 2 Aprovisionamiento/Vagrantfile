@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+config.vm.define :firewall do |firewall|
+ firewall.vm.box = "bento/centos-7"
+ firewall.vm.network :private_network, ip: "192.168.50.2"
+ firewall.vm.network :public_network, bridge: "Realtek RTL8821CE 802.11ac PCIe Adapter", ip: "192.168.1.50"
+ firewall.vm.hostname = "firewall"
+ firewall.vm.provision "shell", path: 'firewallStreama.sh'
+ end
+config.vm.define :servidorSTRM do |servidorSTRM|
+ servidorSTRM.vm.box = "bento/centos-7"
+ #servidorSTRM.vm.network :public_network, bridge: "Realtek RTL8821CE 802.11ac PCIe Adapter", ip: "192.168.1.55"
+ servidorSTRM.vm.network :private_network, ip: "192.168.50.3"
+ #servidorSTRM.vm.network :forwarded_port, guest: 80, host:5567
+ #servidorSTRM.vm.network :forwarded_port, guest: 443, host:5568
+ servidorSTRM.vm.hostname = "servidorSTRM"
+ servidorSTRM.vm.provision "shell", path: 'servidorStreama.sh'
+ servidorSTRM.vm.provision "file", source: "streama.service", destination: "/etc/systemd/system/streama.service"
+ servidorSTRM.vm.provision "shell", path: 'servidorStreama2.sh'
+ end
+end
